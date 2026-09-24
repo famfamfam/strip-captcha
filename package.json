@@ -1,0 +1,40 @@
+{
+  "name": "strip-captcha",
+  "version": "0.1.0",
+  "description": "React component for a numeric captcha whose image is sent as a shuffled tile atlas and reassembled with CSS. Go server included.",
+  "license": "MIT",
+  "author": "famfamfam",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/famfamfam/strip-captcha.git"
+  },
+  "keywords": ["captcha", "react", "form", "anti-bot"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "files": ["dist", "styles.css"],
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "test": "npm run build && node --test \"test/*.test.js\""
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.6.0"
+  }
+}

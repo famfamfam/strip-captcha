@@ -1,0 +1,104 @@
+/* Стили strip-captcha по умолчанию. Подключать необязательно: всё, что нужно
+   для сборки картинки, компонент задаёт сам, а оформление можно передать
+   через classNames. Цвета — переменными, переопределяются на .strip-captcha. */
+
+.strip-captcha {
+  --strip-captcha-border: #d4d4d8;
+  --strip-captcha-bg: #fafafa;
+  --strip-captcha-text: #3f3f46;
+  --strip-captcha-muted: #71717a;
+  --strip-captcha-error: #dc2626;
+  --strip-captcha-focus: #6366f1;
+  --strip-captcha-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font: inherit;
+}
+
+.strip-captcha__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--strip-captcha-text);
+}
+
+.strip-captcha__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strip-captcha__image {
+  border: 1px solid var(--strip-captcha-border);
+  border-radius: var(--strip-captcha-radius);
+  background: var(--strip-captcha-bg);
+  box-sizing: content-box;
+}
+
+.strip-captcha__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 12px;
+  color: var(--strip-captcha-error);
+}
+
+.strip-captcha__refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--strip-captcha-border);
+  border-radius: var(--strip-captcha-radius);
+  background: transparent;
+  color: var(--strip-captcha-muted);
+  cursor: pointer;
+}
+
+.strip-captcha__refresh:hover:not(:disabled) {
+  background: var(--strip-captcha-bg);
+}
+
+.strip-captcha__refresh:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.strip-captcha--loading .strip-captcha__refresh svg {
+  animation: strip-captcha-spin 1s linear infinite;
+}
+
+.strip-captcha__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 14px;
+  border: 1px solid var(--strip-captcha-border);
+  border-radius: var(--strip-captcha-radius);
+  font: inherit;
+  letter-spacing: 0.15em;
+  outline: none;
+}
+
+.strip-captcha__input::placeholder {
+  letter-spacing: normal;
+}
+
+.strip-captcha__input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--strip-captcha-focus);
+}
+
+@keyframes strip-captcha-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip-captcha--loading .strip-captcha__refresh svg {
+    animation: none;
+  }
+}

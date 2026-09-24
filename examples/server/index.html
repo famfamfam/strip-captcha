@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>strip-captcha demo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.3.1",
+        "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
+      }
+    }
+  </script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 360px; margin: 40px auto; padding: 0 16px; color: #18181b; }
+    button[type=submit] { margin-top: 12px; padding: 8px 16px; font: inherit; }
+    #result { margin-top: 12px; min-height: 1.5em; }
+  </style>
+</head>
+<body>
+  <h1 style="font-size: 20px">strip-captcha</h1>
+  <div id="root"></div>
+  <script type="module">
+    import { createElement as h, useState } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { StripCaptcha } from '/dist/index.js';
+
+    function Form() {
+      const [value, setValue] = useState(null);
+      const [reloadKey, setReloadKey] = useState(0);
+      const [result, setResult] = useState('');
+
+      async function submit(e) {
+        e.preventDefault();
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ captcha_id: value.id, captcha_answer: value.answer }),
+        });
+        setResult(res.ok ? 'Верно' : 'Неверно, новая картинка');
+        // Капча одноразовая: после любой попытки нужна новая
+        setReloadKey((k) => k + 1);
+      }
+
+      return h('form', { onSubmit: submit },
+        h(StripCaptcha, {
+          fetchChallenge: () => fetch('/api/captcha').then((r) => (r.ok ? r.json() : null)),
+          onChange: setValue,
+          reloadKey,
+          labels: { label: 'Код с картинки', placeholder: 'Введите {n} цифр', refresh: 'Другая картинка', loadError: 'Не удалось загрузить картинку' },
+        }),
+        h('button', { type: 'submit', disabled: !value }, 'Проверить'),
+        h('div', { id: 'result' }, result),
+      );
+    }
+
+    createRoot(document.getElementById('root')).render(h(Form));
+  </script>
+</body>
+</html>
