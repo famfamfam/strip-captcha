@@ -1,8 +1,8 @@
 {
   "name": "strip-captcha",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React component for a numeric captcha whose image is sent as a shuffled tile atlas and reassembled with CSS. Go server included.",
-  "license": "MIT",
+  "license": "0BSD",
   "author": "famfamfam",
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-// Пример: сервер капчи и демо-страница с React-компонентом.
+// Example: captcha server and a demo page with the React component.
 //
 //	npm install && npm run build
 //	go run ./examples/server

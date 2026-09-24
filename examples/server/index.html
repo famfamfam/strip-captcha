@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,8 +40,8 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ captcha_id: value.id, captcha_answer: value.answer }),
         });
-        setResult(res.ok ? 'Верно' : 'Неверно, новая картинка');
-        // Капча одноразовая: после любой попытки нужна новая
+        setResult(res.ok ? 'Correct' : 'Wrong, here is a new image');
+        // Captchas are single-use: fetch a new one after every attempt
         setReloadKey((k) => k + 1);
       }
 
@@ -50,9 +50,8 @@
           fetchChallenge: () => fetch('/api/captcha').then((r) => (r.ok ? r.json() : null)),
           onChange: setValue,
           reloadKey,
-          labels: { label: 'Код с картинки', placeholder: 'Введите {n} цифр', refresh: 'Другая картинка', loadError: 'Не удалось загрузить картинку' },
         }),
-        h('button', { type: 'submit', disabled: !value }, 'Проверить'),
+        h('button', { type: 'submit', disabled: !value }, 'Check'),
         h('div', { id: 'result' }, result),
       );
     }
