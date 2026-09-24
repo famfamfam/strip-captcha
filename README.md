@@ -106,7 +106,7 @@ captcha, err := stripcaptcha.New(store, stripcaptcha.Options{})
 ## Клиент (React 18+)
 
 ```sh
-npm install github:famfamfam/strip-captcha#v0.1.0
+npm install github:famfamfam/strip-captcha#v0.1.1
 ```
 
 npm соберёт пакет сам при установке (скрипт `prepare`).

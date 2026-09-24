@@ -79,6 +79,7 @@ func (s *Service) render(code string, rng *mrand.Rand) (*image.RGBA, error) {
 
 	out := warp(img, rng, sc)
 	speckle(out, rng)
+	posterize(out, 8)
 	return out, nil
 }
 
@@ -91,7 +92,8 @@ func darkInk(rng *mrand.Rand) color.RGBA {
 }
 
 // paintBackground — градиент между двумя светлыми цветами в случайном
-// направлении, зерно и точки. Ровный фон отделяется от цифр одним порогом.
+// направлении и точки. Ровный фон отделяется от цифр одним порогом. Зерна на
+// каждом пикселе нет: оно почти не мешает OCR, зато раздувало PNG вдвое.
 func paintBackground(img *image.RGBA, rng *mrand.Rand) {
 	b := img.Bounds()
 	w, h := b.Dx(), b.Dy()
@@ -105,10 +107,9 @@ func paintBackground(img *image.RGBA, rng *mrand.Rand) {
 		for x := 0; x < w; x++ {
 			// t — проекция точки на направление градиента, 0..1
 			t := ((float64(x)-float64(w)/2)*dx+(float64(y)-float64(h)/2)*dy)/span + 0.5
-			grain := float64(rng.IntN(13) - 6)
 			i := img.PixOffset(x, y)
 			for c := 0; c < 3; c++ {
-				img.Pix[i+c] = clamp8(c1[c] + (c2[c]-c1[c])*t + grain)
+				img.Pix[i+c] = clamp8(c1[c] + (c2[c]-c1[c])*t)
 			}
 			img.Pix[i+3] = 255
 		}
@@ -297,4 +298,16 @@ func clamp8(v float64) uint8 {
 		return 255
 	}
 	return uint8(v + 0.5)
+}
+
+// posterize округляет каналы до шага step: на глаз не видно, а PNG сжимает
+// такую картинку в разы лучше — после интерполяции почти каждый пиксель
+// получает свой оттенок.
+func posterize(img *image.RGBA, step int) {
+	for i := 0; i < len(img.Pix); i += 4 {
+		for c := 0; c < 3; c++ {
+			v := (int(img.Pix[i+c]) + step/2) / step * step
+			img.Pix[i+c] = uint8(min(v, 255))
+		}
+	}
 }

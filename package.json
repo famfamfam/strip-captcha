@@ -1,6 +1,6 @@
 {
   "name": "strip-captcha",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React component for a numeric captcha whose image is sent as a shuffled tile atlas and reassembled with CSS. Go server included.",
   "license": "MIT",
   "author": "famfamfam",
@@ -20,7 +20,7 @@
     },
     "./styles.css": "./styles.css"
   },
-  "files": ["dist", "styles.css"],
+  "files": ["dist", "src", "styles.css"],
   "sideEffects": ["*.css"],
   "scripts": {
     "build": "tsc -p tsconfig.json",

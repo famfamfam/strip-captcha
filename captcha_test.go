@@ -373,3 +373,21 @@ func TestDumpSamples(t *testing.T) {
 		}
 	}
 }
+
+// Картинка уходит в каждом ответе и в data:-URI: следим, чтобы шум и
+// искажения не раздули её. При 2× и приманках сейчас около 35 КБ.
+func TestImageSizeBudget(t *testing.T) {
+	s := testService(t, nil, Options{RateLimit: -1})
+	total := 0
+	const n = 10
+	for i := 0; i < n; i++ {
+		ch, err := s.Generate(context.Background(), "")
+		if err != nil {
+			t.Fatal(err)
+		}
+		total += len(ch.Image)
+	}
+	if avg := total / n; avg > 64<<10 {
+		t.Fatalf("average data URI is %d KB, budget 64 KB", avg>>10)
+	}
+}
