@@ -108,7 +108,7 @@ The image is about 35 KB with the defaults.
 ## Client (React 18+)
 
 ```sh
-npm install github:famfamfam/strip-captcha#v0.1.2
+npm install github:famfamfam/strip-captcha#v0.1.3
 ```
 
 npm builds the package on install (the `prepare` script).
@@ -193,4 +193,4 @@ STRIPCAPTCHA_DUMP=/tmp/samples go test -run TestDumpSamples  # writes sample ima
 
 ## License
 
-[0BSD](LICENSE). Use it for anything; attribution is not required.
+[MIT](LICENSE). Use it for anything, just keep the copyright notice.
